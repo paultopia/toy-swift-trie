@@ -56,6 +56,9 @@ struct Trie {
         }
     }
     func insert(_ word: String) {
+        if word.count == 0 {
+            return
+        }
         let new_subtree = insert(word[...], parent: root)
         root.children[new_subtree.char!] = new_subtree
     }
