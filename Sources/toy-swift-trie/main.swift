@@ -81,13 +81,17 @@ assert(testTrie.search("car") == false)
 assert(testTrie.search("cat") == true)
 assert(testTrie.search("ca") == false)
 
-// repeated inserts (should be a no-op)
+// repeated inserts 
 testTrie.insert("cat")
 testTrie.insert("cat")
 testTrie.insert("cat")
 assert(testTrie.search("cat") == true)
 assert(testTrie.search("car") == false)
 assert(testTrie.search("ca") == false)
+testTrie.remove("cat")
+assert(testTrie.search("cat") == false)
+testTrie.insert("cat")
+assert(testTrie.search("cat") == true)
 
 // single-char inserts, just to make sure I didn't screw that up.
 assert(testTrie.search("c") == false)
