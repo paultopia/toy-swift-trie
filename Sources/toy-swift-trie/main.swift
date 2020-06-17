@@ -1,39 +1,28 @@
 struct Trie {
-    var root: Node
+    let root: Node
     init() {
         root = Node()
     }
     func search(_ word: String) -> Bool {
-        let letters = Array(word)
-        var curnode = root
-        for letter in letters {
-            guard let match = curnode.children.first(where: {(key, _) in
-                key == letter
-            })
-                else {
-                    return false
+        var curNode = root
+        for letter in word {
+            guard let node = curNode.children[letter] else {
+                return false
             }
-            curnode = match.value
+            curNode = node
         }
-        if curnode.contained {
-            return true
-        }
-        return false
+        return curNode.contained
     }
     
     func remove(_ word: String) {
-        let letters = Array(word)
-        var curnode = root
-        for letter in letters {
-            if !curnode.children.contains(where: {(key, _) in
-                key == letter
-            }) {
-                break
-            } else {
-                curnode = curnode.children[letter]!
+        var curNode = root
+        for letter in word {
+            guard let node = curNode.children[letter] else {
+                return
             }
+            curNode = node
         }
-        curnode.contained = false
+        curNode.contained = false
     }
     
     func insert(_ letters: [Character], parent: Node) -> Node {
@@ -66,7 +55,7 @@ struct Trie {
             }
         }
     }
-    mutating func insert(_ word: String) {
+    func insert(_ word: String) {
         let new_subtree = insert(Array(word), parent: root)
         root.children[new_subtree.char!] = new_subtree
     }
