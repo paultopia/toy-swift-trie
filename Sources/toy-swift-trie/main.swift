@@ -28,51 +28,25 @@ struct Trie {
         curNode.contained = false
     }
     
-    func insert(_ letters: Substring, parent: Node) -> Node {
-        if letters.count == 1 {
-            let letter = letters.first!
-            if parent.children.contains(where: {(key, _) in
-                key == letter
-            }) {
-                print("should be here")
-                parent.children[letter]!.contained = true
-                return parent
+    func insert(_ word: Substring, node: Node) {
+        if let letter = word.first {
+            if let nextnode = node.children[letter] {
+                insert(word.dropFirst(), node: nextnode)
             } else {
-                return Node(letter, final: true)
+                let newnode = Node()
+                node.children[letter] = newnode
+                insert(word.dropFirst(), node: newnode)
             }
         } else {
-            let first = letters.first!
-            let rest = letters.dropFirst()
-            if let subtree = parent.children.first(where: {(key, _) in
-                           key == first
-            }) {
-                let newNode = Node(first, final: subtree.value.contained, kids: subtree.value.children)
-                newNode.children[rest.first!] = insert(rest, parent: newNode)
-                return newNode
-
-            } else {
-            let newNode = Node(first, final: false)
-                newNode.children[rest.first!] = insert(rest, parent: newNode)
-            return newNode
-            }
+            node.contained = true
         }
     }
+
     func insert(_ word: String) {
         if word.count == 0 {
             return
         }
-        if word.count == 1 {
-            if root.children[word.first!] != nil {
-                root.children[word.first!]!.contained = true
-            } else {
-                root.children[word.first!] = Node("x", final: true, kids: [:])
-            }
-        }
-        if search(word) {
-            return
-        }
-        let new_subtree = insert(word[...], parent: root)
-        root.children[word.first!] = new_subtree
+        insert(word[...], node: root)
     }
 }
 
