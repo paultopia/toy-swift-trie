@@ -1,4 +1,9 @@
 struct Trie {
+    class Node {
+        var children: [Character:Node] = [:]
+        var contained: Bool = false
+    }
+    
     let root: Node
     init() {
         root = Node()
@@ -50,10 +55,6 @@ struct Trie {
     }
 }
 
-class Node {
-    var children: [Character:Node] = [:]
-    var contained: Bool = false
-}
 
 
 var testTrie = Trie()
