@@ -110,15 +110,35 @@ assert(testTrie.search("carburetor") == true)
 assert(testTrie.search("car") == false)
 assert(testTrie.search("cat") == true)
 
-testTrie.insert("") // should no longer crash
+// inserting empty strings (should be a no-op)
+testTrie.insert("")
 assert(testTrie.search("") == false)
 
+// removing nonexistent items (should be a no-op)
 testTrie.remove("ca") // shouldn't crash
 testTrie.remove("car") // shouldn't crash
 assert(testTrie.search("carburetor") == true)
 assert(testTrie.search("car") == false)
 assert(testTrie.search("cat") == true)
 assert(testTrie.search("ca") == false)
+
+// repeated inserts (should be a no-op)
+testTrie.insert("cat")
+testTrie.insert("cat")
+testTrie.insert("cat")
+assert(testTrie.search("cat") == true)
+assert(testTrie.search("car") == false)
+assert(testTrie.search("ca") == false)
+
+// single-letter inserts, just to make sure I didn't screw that up.
+
+assert(testTrie.search("c") == false)
+testTrie.insert("c")
+assert(testTrie.search("c") == true)
+assert(testTrie.search("ca") == false)
+testTrie.remove("c")
+assert(testTrie.search("c") == false)
+assert(testTrie.search("cat") == true)
 
 
 print("success")
