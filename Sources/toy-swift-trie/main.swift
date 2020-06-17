@@ -5,8 +5,8 @@ struct Trie {
     }
     func search(_ word: String) -> Bool {
         var curNode = root
-        for letter in word {
-            guard let node = curNode.children[letter] else {
+        for character in word {
+            guard let node = curNode.children[character] else {
                 return false
             }
             curNode = node
@@ -19,8 +19,8 @@ struct Trie {
             return
         }
         var curNode = root
-        for letter in word {
-            guard let node = curNode.children[letter] else {
+        for character in word {
+            guard let node = curNode.children[character] else {
                 return
             }
             curNode = node
@@ -29,12 +29,12 @@ struct Trie {
     }
     
     func insert(_ word: Substring, node: Node) {
-        if let letter = word.first {
-            if let nextNode = node.children[letter] {
+        if let character = word.first {
+            if let nextNode = node.children[character] {
                 insert(word.dropFirst(), node: nextNode)
             } else {
                 let newNode = Node()
-                node.children[letter] = newNode
+                node.children[character] = newNode
                 insert(word.dropFirst(), node: newNode)
             }
         } else {
@@ -51,20 +51,8 @@ struct Trie {
 }
 
 class Node {
-    var children: [Character:Node]
-    var contained: Bool
-    init() {
-        children = [:]
-        contained = false
-    }
-    init(_ c: Character, final: Bool) {
-        children = [:]
-        contained = final
-    }
-    init(_ c: Character, final: Bool, kids: [Character:Node]) {
-        children = kids
-        contained = final
-    }
+    var children: [Character:Node] = [:]
+    var contained: Bool = false
 }
 
 
@@ -112,7 +100,7 @@ assert(testTrie.search("cat") == true)
 assert(testTrie.search("car") == false)
 assert(testTrie.search("ca") == false)
 
-// single-letter inserts, just to make sure I didn't screw that up.
+// single-character inserts, just to make sure I didn't screw that up.
 assert(testTrie.search("c") == false)
 testTrie.insert("c")
 assert(testTrie.search("c") == true)
@@ -122,7 +110,7 @@ assert(testTrie.search("c") == false)
 assert(testTrie.search("cat") == true)
 assert(testTrie.search("car") == false)
 
-// two-letter inserts because I'm paranoid
+// two-character inserts because I'm paranoid
 assert(testTrie.search("ca") == false)
 testTrie.insert("ca")
 assert(testTrie.search("ca") == true)
