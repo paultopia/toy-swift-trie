@@ -30,12 +30,12 @@ struct Trie {
     
     func insert(_ word: Substring, node: Node) {
         if let letter = word.first {
-            if let nextnode = node.children[letter] {
-                insert(word.dropFirst(), node: nextnode)
+            if let nextNode = node.children[letter] {
+                insert(word.dropFirst(), node: nextNode)
             } else {
-                let newnode = Node()
-                node.children[letter] = newnode
-                insert(word.dropFirst(), node: newnode)
+                let newNode = Node()
+                node.children[letter] = newNode
+                insert(word.dropFirst(), node: newNode)
             }
         } else {
             node.contained = true
