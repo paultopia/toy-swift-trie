@@ -25,9 +25,9 @@ struct Trie {
         curNode.contained = false
     }
     
-    func insert(_ letters: [Character], parent: Node) -> Node {
+    func insert(_ letters: Substring, parent: Node) -> Node {
         if letters.count == 1 {
-            let letter = letters[0]
+            let letter = letters.first!
             if parent.children.contains(where: {(key, _) in
                 key == letter
             }) {
@@ -39,24 +39,24 @@ struct Trie {
                 return newNode
             }
         } else {
-            let first = letters[0]
-            let rest = Array(letters.dropFirst())
+            let first = letters.first!
+            let rest = letters.dropFirst()
             if let subtree = parent.children.first(where: {(key, _) in
                            key == first
             }) {
                 let newNode = Node(first, final: subtree.value.contained, kids: subtree.value.children)
-                newNode.children[rest[0]] = insert(rest, parent: newNode)
+                newNode.children[rest.first!] = insert(rest, parent: newNode)
                 return newNode
 
             } else {
             let newNode = Node(first, final: false)
-            newNode.children[rest[0]] = insert(rest, parent: newNode)
+                newNode.children[rest.first!] = insert(rest, parent: newNode)
             return newNode
             }
         }
     }
     func insert(_ word: String) {
-        let new_subtree = insert(Array(word), parent: root)
+        let new_subtree = insert(word[...], parent: root)
         root.children[new_subtree.char!] = new_subtree
     }
 }
