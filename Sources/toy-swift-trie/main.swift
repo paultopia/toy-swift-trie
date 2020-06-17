@@ -3,44 +3,34 @@ struct Trie {
         var children: [Character:Node] = [:]
         var contained: Bool = false
     }
-    
-    let root: Node
-    init() {
-        root = Node()
-    }
+    let root: Node = Node()
     func search(_ word: String) -> Bool {
         var curNode = root
-        for character in word {
-            guard let node = curNode.children[character] else {
-                return false
-            }
+        for char in word {
+            guard let node = curNode.children[char] else { return false }
             curNode = node
         }
         return curNode.contained
     }
     
     func remove(_ word: String) {
-        guard search(word) else {
-            return
-        }
+        guard search(word) else { return }
         var curNode = root
-        for character in word {
-            guard let node = curNode.children[character] else {
-                return
-            }
+        for char in word {
+            guard let node = curNode.children[char] else { return }
             curNode = node
         }
         curNode.contained = false
     }
     
-    func insert(_ word: Substring, node: Node) {
-        if let character = word.first {
-            if let nextNode = node.children[character] {
-                insert(word.dropFirst(), node: nextNode)
+    func insert(_ word: Substring, atNode node: Node) {
+        if let char = word.first {
+            if let nextNode = node.children[char] {
+                insert(word.dropFirst(), atNode: nextNode)
             } else {
                 let newNode = Node()
-                node.children[character] = newNode
-                insert(word.dropFirst(), node: newNode)
+                node.children[char] = newNode
+                insert(word.dropFirst(), atNode: newNode)
             }
         } else {
             node.contained = true
@@ -48,10 +38,8 @@ struct Trie {
     }
 
     func insert(_ word: String) {
-        if word.count == 0 {
-            return
-        }
-        insert(word[...], node: root)
+        if word.count == 0 { return }
+        insert(word[...], atNode: root)
     }
 }
 
@@ -101,7 +89,7 @@ assert(testTrie.search("cat") == true)
 assert(testTrie.search("car") == false)
 assert(testTrie.search("ca") == false)
 
-// single-character inserts, just to make sure I didn't screw that up.
+// single-char inserts, just to make sure I didn't screw that up.
 assert(testTrie.search("c") == false)
 testTrie.insert("c")
 assert(testTrie.search("c") == true)
@@ -111,7 +99,7 @@ assert(testTrie.search("c") == false)
 assert(testTrie.search("cat") == true)
 assert(testTrie.search("car") == false)
 
-// two-character inserts because I'm paranoid
+// two-char inserts because I'm paranoid
 assert(testTrie.search("ca") == false)
 testTrie.insert("ca")
 assert(testTrie.search("ca") == true)
