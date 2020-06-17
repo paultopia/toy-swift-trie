@@ -15,6 +15,9 @@ struct Trie {
     }
     
     func remove(_ word: String) {
+        guard search(word) else {
+            return
+        }
         var curNode = root
         for letter in word {
             guard let node = curNode.children[letter] else {
@@ -109,5 +112,13 @@ assert(testTrie.search("cat") == true)
 
 testTrie.insert("") // should no longer crash
 assert(testTrie.search("") == false)
+
+testTrie.remove("ca") // shouldn't crash
+testTrie.remove("car") // shouldn't crash
+assert(testTrie.search("carburetor") == true)
+assert(testTrie.search("car") == false)
+assert(testTrie.search("cat") == true)
+assert(testTrie.search("ca") == false)
+
 
 print("success")
