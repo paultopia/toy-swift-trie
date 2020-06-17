@@ -31,12 +31,10 @@ struct Trie {
             if parent.children.contains(where: {(key, _) in
                 key == letter
             }) {
-                let newNode = parent
-                newNode.children[letter]!.contained = true
-                return newNode
+                parent.children[letter]!.contained = true
+                return parent
             } else {
-                let newNode = Node(letter, final: true)
-                return newNode
+                return Node(letter, final: true)
             }
         } else {
             let first = letters.first!
@@ -57,6 +55,9 @@ struct Trie {
     }
     func insert(_ word: String) {
         if word.count == 0 {
+            return
+        }
+        if search(word) {
             return
         }
         let new_subtree = insert(word[...], parent: root)
@@ -109,4 +110,8 @@ testTrie.remove("car")
 assert(testTrie.search("carburetor") == true)
 assert(testTrie.search("car") == false)
 assert(testTrie.search("cat") == true)
+
+testTrie.insert("") // should no longer crash
+assert(testTrie.search("") == false)
+
 print("success")
