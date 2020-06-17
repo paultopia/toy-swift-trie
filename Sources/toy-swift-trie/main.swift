@@ -61,28 +61,24 @@ struct Trie {
             return
         }
         let new_subtree = insert(word[...], parent: root)
-        root.children[new_subtree.char!] = new_subtree
+        root.children[word.first!] = new_subtree
     }
 }
 
 class Node {
-    var char: Character?
     var children: [Character:Node]
     var contained: Bool
     init() {
-        char = nil
         children = [:]
         contained = false
     }
     init(_ c: Character, final: Bool) {
         children = [:]
         contained = final
-        char = c
     }
     init(_ c: Character, final: Bool, kids: [Character:Node]) {
         children = kids
         contained = final
-        char = c
     }
 }
 
